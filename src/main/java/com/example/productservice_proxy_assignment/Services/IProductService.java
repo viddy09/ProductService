@@ -1,5 +1,7 @@
 package com.example.productservice_proxy_assignment.Services;
 
+import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
+import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
 import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Product;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +14,9 @@ public interface IProductService {
 
     Product getSingleProduct(Long productId);
 
-    Product addNewProduct(ProductDTO productDTO);
+    Product addNewProduct(IClientProductDTO fakeProductDTO);
 
     boolean deleteProduct(Long productId);
+
+    Product patchProduct(Long productId, FakeStoreDTO fakeProductDTO);
 }

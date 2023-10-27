@@ -1,5 +1,6 @@
 package com.example.productservice_proxy_assignment.Controllers;
 
+import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
 import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Product;
 import com.example.productservice_proxy_assignment.Services.ProductService;
@@ -58,7 +59,7 @@ public class ProductController{
     @PostMapping()
     public ResponseEntity<Product> addNewProduct(@RequestBody ProductDTO productDTO){
         try{
-            return new ResponseEntity<>(this.productService.addNewProduct(productDTO), HttpStatus.OK);
+            return new ResponseEntity<>(this.productService.addNewProduct((IClientProductDTO) productDTO), HttpStatus.OK);
         }
         catch(Exception exception){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,6 +73,13 @@ public class ProductController{
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/{productId}")
+    public ResponseEntity<Product> patchProduct(@PathVariable Long productId, @RequestBody ProductDTO productDTO){
+        try{
+            return new ResponseEntity<>(productService.)
+        }
     }
 
 }
