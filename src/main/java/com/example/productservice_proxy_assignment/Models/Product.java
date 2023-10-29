@@ -2,6 +2,7 @@ package com.example.productservice_proxy_assignment.Models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatusCode;
 
 @Getter
 @Setter

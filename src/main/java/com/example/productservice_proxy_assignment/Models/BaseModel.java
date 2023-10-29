@@ -6,11 +6,8 @@ import java.util.Date;
 @Getter
 @Setter
 public abstract class BaseModel {
-    private String id;
+    private Long id;
     private Date CreatedDate;
     private Date LastModifiedDate;
     private boolean isDeleted;
-
-
-
 }

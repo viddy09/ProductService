@@ -1,8 +1,10 @@
 package com.example.productservice_proxy_assignment.Controllers;
 
 import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
+import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
 import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Product;
+import com.example.productservice_proxy_assignment.Services.IProductService;
 import com.example.productservice_proxy_assignment.Services.ProductService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,9 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController{
 
-    private ProductService productService;
-    ProductController(){
-        this.productService = new ProductService();
+    IProductService productService;
+    public ProductController(IProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("")
@@ -56,10 +58,10 @@ public class ProductController{
         }
     }
 
-    @PostMapping()
-    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDTO productDTO){
+    @PostMapping("")
+    public ResponseEntity<Product> addNewProduct(@RequestBody FakeStoreDTO productDTO){
         try{
-            return new ResponseEntity<>(this.productService.addNewProduct((IClientProductDTO) productDTO), HttpStatus.OK);
+            return new ResponseEntity<>(this.productService.addNewProduct(productDTO), HttpStatus.OK);
         }
         catch(Exception exception){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,17 +70,17 @@ public class ProductController{
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ProductDTO> deleteProduct(@PathVariable("id") Long productId){
-        boolean result = this.productService.deleteProduct(productId);
-        if(result){
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
+        this.productService.deleteProduct(productId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<Product> patchProduct(@PathVariable Long productId, @RequestBody ProductDTO productDTO){
+    public ResponseEntity<Product> patchProduct(@PathVariable Long productId, @RequestBody FakeStoreDTO productDTO){
         try{
-            return new ResponseEntity<>(productService.)
+            return new ResponseEntity<>(this.productService.patchProduct(productId,productDTO),HttpStatus.OK);
+        }
+        catch(Exception exception){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

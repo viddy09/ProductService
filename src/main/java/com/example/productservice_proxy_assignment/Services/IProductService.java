@@ -14,9 +14,9 @@ public interface IProductService {
 
     Product getSingleProduct(Long productId);
 
-    Product addNewProduct(IClientProductDTO fakeProductDTO);
+    Product addNewProduct(FakeStoreDTO fakeProductDTO);
 
-    boolean deleteProduct(Long productId);
+    void deleteProduct(Long productId);
 
     Product patchProduct(Long productId, FakeStoreDTO fakeProductDTO);
 }

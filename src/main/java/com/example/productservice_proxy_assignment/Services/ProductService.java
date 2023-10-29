@@ -7,15 +7,21 @@ import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Category;
 import com.example.productservice_proxy_assignment.Models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class ProductService implements IProductService {
 
-    private RestTemplateBuilder restTemplateBuilder;
-    private FakeStoreClient fakeStoreClient;
+    final RestTemplateBuilder restTemplateBuilder;
+    final FakeStoreClient fakeStoreClient;
+    public ProductService(RestTemplateBuilder restTemplateBuilder, FakeStoreClient fakeStoreClient){
+        this.restTemplateBuilder=restTemplateBuilder;
+        this.fakeStoreClient=fakeStoreClient;
+    }
     @Override
     public List<Product> getAllProducts(){
         //RestTemplate restTemplate = this.restTemplateBuilder.build();
@@ -26,10 +32,11 @@ public class ProductService implements IProductService {
     }
     public List<Product> getProduct(FakeStoreDTO[] fakeStoreDTOS){
         List<Product> products = new LinkedList<>();
-        for(FakeStoreDTO productDTO : productDTOS){
+        for(FakeStoreDTO productDTO : fakeStoreDTOS){
             Product product = new Product();
             product.setId(productDTO.getId());
             product.setTitle(productDTO.getTitle());
+            product.setImageURL(productDTO.getImage());
             Category category = new Category();
             category.setName(productDTO.getCategory());
             product.setCategory(category);
@@ -53,7 +60,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product addNewProduct(IClientProductDTO fakeProductDTO){
+    public Product addNewProduct(FakeStoreDTO fakeProductDTO){
         //RestTemplate restTemplate = this.restTemplateBuilder.build();
         //ResponseEntity<ProductDTO> responseEntity = restTemplate.postForEntity("https://fakestoreapi.com/products", productDTO, ProductDTO.class);
         //List<Product> products = this.getProduct(new ProductDTO[]{responseEntity.getBody()});
@@ -64,14 +71,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public boolean deleteProduct(Long productId){
+    public void deleteProduct(Long productId){
         //RestTemplate restTemplate = this.restTemplateBuilder.build();
         //restTemplate.delete("https://fakestoreapi.com/products/{id}", productId, ProductDTO.class);
         fakeStoreClient.deleteProduct(productId);
-        if(this.getSingleProduct(productId) == null){
-            return true;
-        }
-        return false;
     }
 
     public Product patchProduct(Long productId, FakeStoreDTO fakeProductDTO){
