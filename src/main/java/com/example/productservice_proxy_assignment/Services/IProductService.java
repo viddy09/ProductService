@@ -18,5 +18,6 @@ public interface IProductService {
 
     void deleteProduct(Long productId);
 
-    Product patchProduct(Long productId, FakeStoreDTO fakeProductDTO);
+    Product patchProduct(Long productId, Product product);
+
 }

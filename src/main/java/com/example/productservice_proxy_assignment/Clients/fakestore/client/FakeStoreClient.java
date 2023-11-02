@@ -23,12 +23,12 @@ public class FakeStoreClient {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    public <T> ResponseEntity<T> requestForEntity(
-           HttpMethod httpMethod, String url, @Nullable Object request, Class<T> responseType, Object uriVariables) throws RestClientException {
+    private <T> ResponseEntity<T> requestForEntity(HttpMethod httpMethod, String url, @Nullable Object request,
+                                                   Class<T> responseType, Object... uriVariables) throws RestClientException {
         RestTemplate restTemplate = restTemplateBuilder.requestFactory(
                 HttpComponentsClientHttpRequestFactory.class
         ).build();
-        RequestCallback requestCallback = restTemplate.httpEntityCallback(request, responseType);
+        RequestCallback requestCallback =restTemplate.httpEntityCallback(request, responseType);
         ResponseExtractor<ResponseEntity<T>> responseExtractor = restTemplate.responseEntityExtractor(responseType);
         return restTemplate.execute(url, httpMethod, requestCallback, responseExtractor, uriVariables);
     }

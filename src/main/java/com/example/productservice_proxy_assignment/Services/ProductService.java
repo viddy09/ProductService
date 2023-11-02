@@ -77,13 +77,19 @@ public class ProductService implements IProductService {
         fakeStoreClient.deleteProduct(productId);
     }
 
-    public Product patchProduct(Long productId, FakeStoreDTO fakeProductDTO){
-        fakeProductDTO.setPrice(2.22);
-        fakeProductDTO.setDescription("XYZ");
-        List<Product> products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.patchProduct(productId,fakeProductDTO)});
-        Product product = null;
-        if(!products.isEmpty()) product = products.get(0);
-        return product;
+    public Product patchProduct(Long productId, Product product){
+        RestTemplate restTemplate = restTemplateBuilder.build();
+
+        FakeStoreDTO fakeStoreDto = new FakeStoreDTO();
+        fakeStoreDto.setDescription(product.getDescription());
+        fakeStoreDto.setImage(product.getImageURL());
+        fakeStoreDto.setPrice(product.getPrice());
+        fakeStoreDto.setTitle(product.getTitle());
+        fakeStoreDto.setCategory(product.getCategory().getName());
+        List<Product> products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.patchProduct(productId,fakeStoreDto)});
+        Product product1 = null;
+        if(!products.isEmpty()) product1 = products.get(0);
+        return product1;
     }
 
 }

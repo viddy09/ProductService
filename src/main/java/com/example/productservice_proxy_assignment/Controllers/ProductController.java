@@ -3,6 +3,7 @@ package com.example.productservice_proxy_assignment.Controllers;
 import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
 import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
 import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
+import com.example.productservice_proxy_assignment.Models.Category;
 import com.example.productservice_proxy_assignment.Models.Product;
 import com.example.productservice_proxy_assignment.Services.IProductService;
 import com.example.productservice_proxy_assignment.Services.ProductService;
@@ -75,13 +76,16 @@ public class ProductController{
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<Product> patchProduct(@PathVariable Long productId, @RequestBody FakeStoreDTO productDTO){
-        try{
-            return new ResponseEntity<>(this.productService.patchProduct(productId,productDTO),HttpStatus.OK);
-        }
-        catch(Exception exception){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public Product patchProduct(@PathVariable("productId") Long productId, @RequestBody ProductDTO productDto) {
+
+        Product product = new Product();
+        product.setId(Long.valueOf(productDto.getId()));
+        product.setCategory(new Category());
+        product.getCategory().setName(productDto.getCategory());
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        product.setDescription(productDto.getDescription());
+        return this.productService.patchProduct(productId, product);
     }
 
 }
