@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.LinkedList;
 import java.util.List;
 
-@Service
+//@Service
 public class ProductService implements IProductService {
 
     final RestTemplateBuilder restTemplateBuilder;
