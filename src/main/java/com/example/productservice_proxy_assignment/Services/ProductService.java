@@ -60,11 +60,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product addNewProduct(FakeStoreDTO fakeProductDTO){
+    public Product addNewProduct(ProductDTO productDTO){
         //RestTemplate restTemplate = this.restTemplateBuilder.build();
         //ResponseEntity<ProductDTO> responseEntity = restTemplate.postForEntity("https://fakestoreapi.com/products", productDTO, ProductDTO.class);
         //List<Product> products = this.getProduct(new ProductDTO[]{responseEntity.getBody()});
-        List<Product> products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.addNewProduct(fakeProductDTO)});
+        List<Product> products= new LinkedList<>();
+        //products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.addNewProduct(fakeProductDTO)});
         Product product = null;
         if(!products.isEmpty()) product = products.get(0);
         return product;

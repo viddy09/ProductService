@@ -1,9 +1,11 @@
 package com.example.productservice_proxy_assignment.Services;
 
 import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
+import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Category;
 import com.example.productservice_proxy_assignment.Models.Product;
 import com.example.productservice_proxy_assignment.Repositories.ProductRepo;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,41 +13,46 @@ import java.util.List;
 @Service
 public class SelfProductService implements IProductService{
 
-    ProductRepo productRepo;
+
+    private final ProductRepo productRepo;
     SelfProductService(ProductRepo productRepo){
         this.productRepo = productRepo;
     }
     @Override
     public List<Product> getAllProducts() {
-        return null;
+        return productRepo.findAll();
     }
 
     @Override
     public Product getSingleProduct(Long productId) {
-        return null;
+        return productRepo.findById(productId).get();
     }
 
     @Override
-    public Product addNewProduct(FakeStoreDTO fakeProductDTO) {
+    public Product addNewProduct(ProductDTO productDTO) {
+        Product product = this.getProduct(productDTO);
+        return this.productRepo.save(product);
+    }
+
+    public Product getProduct(@NotNull ProductDTO productDTO){
         Product product = new Product();
-        product.setTitle(fakeProductDTO.getTitle());
-        product.setPrice(fakeProductDTO.getPrice());
-        product.setDescription(fakeProductDTO.getDescription());
-        product.setImageURL(fakeProductDTO.getImage());
+        product.setTitle(productDTO.getTitle());
+        product.setPrice(productDTO.getPrice());
+        product.setDescription(productDTO.getDescription());
+        product.setImageURL(productDTO.getImageURL());
         Category category = new Category();
-        category.setName(fakeProductDTO.getCategory());
+        category.setName(productDTO.getCategory());
         product.setCategory(category);
-        Product product1 = this.productRepo.save(product);
-        return product1;
+        return product;
     }
 
     @Override
     public void deleteProduct(Long productId) {
-
+        productRepo.deleteById(productId);
     }
 
     @Override
     public Product patchProduct(Long productId, Product product) {
-        return null;
+        return productRepo.save(product);
     }
 }

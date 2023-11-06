@@ -60,7 +60,7 @@ public class ProductController{
     }
 
     @PostMapping("")
-    public ResponseEntity<Product> addNewProduct(@RequestBody FakeStoreDTO productDTO){
+    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDTO productDTO){
         try{
             return new ResponseEntity<>(this.productService.addNewProduct(productDTO), HttpStatus.OK);
         }
