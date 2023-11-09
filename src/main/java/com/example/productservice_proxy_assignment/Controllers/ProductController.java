@@ -76,7 +76,7 @@ public class ProductController{
     }
 
     @PatchMapping("/{productId}")
-    public Product patchProduct(@PathVariable("productId") Long productId, @RequestBody ProductDTO productDto) {
+    public ResponseEntity<Product> patchProduct(@PathVariable("productId") Long productId, @RequestBody ProductDTO productDto) {
 
         Product product = new Product();
         product.setId(Long.valueOf(productDto.getId()));
@@ -85,7 +85,7 @@ public class ProductController{
         product.setTitle(productDto.getTitle());
         product.setPrice(productDto.getPrice());
         product.setDescription(productDto.getDescription());
-        return this.productService.patchProduct(productId, product);
+        return new ResponseEntity<>(this.productService.patchProduct(productId, product),HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.productservice_proxy_assignment.Services;
 
-import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
 import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Category;
 import com.example.productservice_proxy_assignment.Models.Product;

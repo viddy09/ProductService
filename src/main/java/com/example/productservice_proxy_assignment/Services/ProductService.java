@@ -1,13 +1,11 @@
 package com.example.productservice_proxy_assignment.Services;
 
-import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
 import com.example.productservice_proxy_assignment.Clients.fakestore.client.FakeStoreClient;
 import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
 import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Category;
 import com.example.productservice_proxy_assignment.Models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;

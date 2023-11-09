@@ -58,6 +58,11 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId> <!--liquibase-->
+            <artifactId>flyway-mysql</artifactId>
+            <version>9.22.2</version>
+        </dependency>
     </dependencies>
 
     <build>
