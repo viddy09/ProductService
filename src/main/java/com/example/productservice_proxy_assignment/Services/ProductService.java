@@ -1,26 +1,32 @@
 package com.example.productservice_proxy_assignment.Services;
 
-import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
 import com.example.productservice_proxy_assignment.Clients.fakestore.client.FakeStoreClient;
 import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
 import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
 import com.example.productservice_proxy_assignment.Models.Category;
 import com.example.productservice_proxy_assignment.Models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
 
-//@Service
+@Primary
+@Service
 public class ProductService implements IProductService {
 
     final RestTemplateBuilder restTemplateBuilder;
     final FakeStoreClient fakeStoreClient;
-    public ProductService(RestTemplateBuilder restTemplateBuilder, FakeStoreClient fakeStoreClient){
+    final RedisTemplate<String, Object> redisTemplate;
+    public ProductService(RestTemplateBuilder restTemplateBuilder, FakeStoreClient fakeStoreClient,
+                          RedisTemplate<String, Object> redisTemplate){
         this.restTemplateBuilder=restTemplateBuilder;
         this.fakeStoreClient=fakeStoreClient;
+        this.redisTemplate = redisTemplate;
     }
     @Override
     public List<Product> getAllProducts(){
@@ -47,12 +53,17 @@ public class ProductService implements IProductService {
     }
     @Override
     public Product getSingleProduct(Long productId) {
-        //RestTemplate restTemplate = this.restTemplateBuilder.build();
-        //ResponseEntity<ProductDTO> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/{id}", ProductDTO.class, productId);
-        //List<Product> products = this.getProduct(new ProductDTO[]{responseEntity.getBody()});
-        //Product product = null;
-        //if(!products.isEmpty()) product = products.get(0);
-        List<Product> products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.getSingleProduct(productId)});
+        /*RestTemplate restTemplate = this.restTemplateBuilder.build();
+            ResponseEntity<ProductDTO> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/{id}", ProductDTO.class, productId);
+            List<Product> products = this.getProduct(new ProductDTO[]{responseEntity.getBody()});
+            Product product = null;
+            if(!products.isEmpty()) product = products.get(0);*/
+        FakeStoreDTO fd = (FakeStoreDTO)redisTemplate.opsForHash().get("PRODUCTS", productId);
+        if(fd == null){
+            fd = (FakeStoreDTO)fakeStoreClient.getSingleProduct(productId);
+            redisTemplate.opsForHash().put("PRODUCTS", productId, fd);
+        }
+        List<Product> products = this.getProduct(new FakeStoreDTO[]{fd});
         Product product = null;
         if(!products.isEmpty()) product = products.get(0);
         return product;
