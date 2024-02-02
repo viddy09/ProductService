@@ -1,15 +1,14 @@
-package com.example.productservice_proxy_assignment.Services;
+package com.example.productservice.Services;
 
-import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
-import com.example.productservice_proxy_assignment.Models.Category;
-import com.example.productservice_proxy_assignment.Models.Product;
-import com.example.productservice_proxy_assignment.Repositories.ElasticSearchRepo;
-import com.example.productservice_proxy_assignment.Repositories.ProductRepo;
+import com.example.productservice.DTOs.ProductDTO;
+import com.example.productservice.Models.Category;
+import com.example.productservice.Models.Product;
+import com.example.productservice.Repositories.ProductRepo;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class SelfProductService implements IProductService{
 
@@ -55,7 +54,8 @@ public class SelfProductService implements IProductService{
     }
 
     @Override
-    public Product patchProduct(Long productId, Product product) {
+    public Product patchProduct(ProductDTO productDTO) {
+        Product product = getProduct(productDTO);
         return productRepo.save(product);
     }
 }

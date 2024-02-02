@@ -1,7 +1,7 @@
-package com.example.productservice_proxy_assignment.Services;
+package com.example.productservice.Services;
 
-import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
-import com.example.productservice_proxy_assignment.Models.Product;
+import com.example.productservice.DTOs.ProductDTO;
+import com.example.productservice.Models.Product;
 
 import java.util.List;
 
@@ -14,6 +14,5 @@ public interface IProductService {
 
     void deleteProduct(Long productId);
 
-    Product patchProduct(Long productId, Product product);
-
+    Product patchProduct(ProductDTO productDto);
 }

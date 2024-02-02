@@ -1,9 +1,9 @@
-package com.example.productservice_proxy_assignment.Controllers;
+package com.example.productservice.Controllers;
 
-import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
-import com.example.productservice_proxy_assignment.DTOs.SearchRequestDTO;
-import com.example.productservice_proxy_assignment.Models.Product;
-import com.example.productservice_proxy_assignment.Services.SearchService;
+import com.example.productservice.DTOs.ProductDTO;
+import com.example.productservice.DTOs.SearchRequestDTO;
+import com.example.productservice.Models.Product;
+import com.example.productservice.Services.SearchService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

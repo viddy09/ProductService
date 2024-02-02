@@ -1,6 +1,5 @@
-package com.example.productservice_proxy_assignment.DTOs;
+package com.example.productservice.DTOs;
 
-import com.example.productservice_proxy_assignment.Models.Category;
 import lombok.Getter;
 import lombok.Setter;
 

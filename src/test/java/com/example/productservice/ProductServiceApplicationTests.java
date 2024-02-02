@@ -1,10 +1,10 @@
-package com.example.productservice_proxy_assignment;
+package com.example.productservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProductServiceProxyAssignmentApplicationTests {
+class ProductServiceApplicationTests {
 
     @Test
     void contextLoads() {

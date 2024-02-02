@@ -1,12 +1,12 @@
-package com.example.productservice_proxy_assignment.Clients.fakestore.client;
+package com.example.productservice.Clients.fakestore.client;
 
-import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
-import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
-import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
+import com.example.productservice.Clients.fakestore.IClientProductDTO;
+import com.example.productservice.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
+import com.example.productservice.DTOs.ProductDTO;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RequestCallback;

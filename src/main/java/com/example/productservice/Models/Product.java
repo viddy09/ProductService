@@ -1,4 +1,4 @@
-package com.example.productservice_proxy_assignment.Models;
+package com.example.productservice.Models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;

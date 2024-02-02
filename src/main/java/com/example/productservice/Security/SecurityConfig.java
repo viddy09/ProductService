@@ -1,6 +1,5 @@
-package com.example.productservice_proxy_assignment.Security;
+package com.example.productservice.Security;
 
-import com.example.productservice_proxy_assignment.Services.IProductService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -12,12 +11,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    /*@Bean
+    @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .csrf().disable();
+        /*http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+              //.formLogin(Customizer.withDefaults())
+                .csrf().disable();*/
         /*http
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/products")
@@ -33,20 +32,7 @@ public class SecurityConfig {
                 //.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
                 .cors().disable()
                 .csrf().disable();*/
-        /*http.csrf().disable().authorizeRequests().anyRequest().permitAll();
-        return http.build();
-
-    }*/
-
-    @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
-            throws Exception {
-        /*http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                authorizationManagerRequestMatcherRegistry.requestMatchers("/login*").permitAll());*/
-        /*http.authorizeRequests().anyRequest().authenticated();*/
-        http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .csrf().disable();
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
         return http.build();
 
     }

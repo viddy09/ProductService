@@ -1,8 +1,8 @@
-package com.example.productservice_proxy_assignment.Services;
+package com.example.productservice.Services;
 
-import com.example.productservice_proxy_assignment.Models.Product;
-import com.example.productservice_proxy_assignment.Models.SortParam;
-import com.example.productservice_proxy_assignment.Repositories.ProductRepo;
+import com.example.productservice.Models.Product;
+import com.example.productservice.Models.SortParam;
+import com.example.productservice.Repositories.ProductRepo;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

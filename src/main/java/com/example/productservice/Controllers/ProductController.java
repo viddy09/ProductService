@@ -1,23 +1,20 @@
-package com.example.productservice_proxy_assignment.Controllers;
+package com.example.productservice.Controllers;
 
-import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
-import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
-import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
-import com.example.productservice_proxy_assignment.Models.Category;
-import com.example.productservice_proxy_assignment.Models.Product;
-import com.example.productservice_proxy_assignment.Security.JWTObject;
-import com.example.productservice_proxy_assignment.Security.TokenValidator;
-import com.example.productservice_proxy_assignment.Services.IProductService;
-import com.example.productservice_proxy_assignment.Services.ProductService;
-import org.springframework.http.HttpHeaders;
+import com.example.productservice.DTOs.ProductDTO;
+import com.example.productservice.Models.Product;
+import com.example.productservice.Services.IProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
+
+/*
+* Controller Providing API for getting and Updating Available Product
+* */
 
 @RestController
 @RequestMapping("/products")
@@ -29,15 +26,17 @@ public class ProductController{
         //this.tokenValidator = tokenValidator;
     }
 
+    //Get All Available Product
     @GetMapping("")
-    public ResponseEntity<List<Product>> getAllProducts(){
-        ResponseEntity<List<Product>> responseEntity;
+    public ResponseEntity<List<ProductDTO>> getAllProducts(){
+        ResponseEntity<List<ProductDTO>> responseEntity;
         try{
-//            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-//            headers.add("Accept", "application/json");
-//            headers.add("Content-Type", "application/json");
-//            headers.add("auth-token", "heyaccess");
-            responseEntity = new ResponseEntity<>(this.productService.getAllProducts(), HttpStatus.OK);
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            headers.add("Accept", "application/json");
+            headers.add("Content-Type", "application/json");
+            headers.add("auth-token", "heyaccess");
+            List<ProductDTO> productDTOS = this.productsToProductDTOs(this.productService.getAllProducts());
+            responseEntity = new ResponseEntity<>(productDTOS, headers, HttpStatus.OK);
             return responseEntity;
         }
         catch(Exception exception) {
@@ -46,20 +45,22 @@ public class ProductController{
         }
     }
 
+    //Get Product By Id
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long productId) {
-        ResponseEntity<Product> responseEntity;
+    public ResponseEntity<ProductDTO> getSingleProduct(@PathVariable("id") Long productId) {
+        ResponseEntity<ProductDTO> responseEntity;
         try{
             /*JWTObject authtoken = null;
             if(token !=  null) {
                 authtoken = tokenValidator.validateToken(token).get();
-            }
+            }*/
             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
             headers.add("Accept", "application/json");
             headers.add("Content-Type", "application/json");
-            headers.add("auth-token", "heyaccess");*/
+            headers.add("auth-token", "heyaccess");
             //responseEntity = new ResponseEntity<>(this.productService.getSingleProduct(productId, authtoken), headers, HttpStatus.OK);
-            responseEntity = new ResponseEntity<>(this.productService.getSingleProduct(productId), HttpStatus.OK);
+            ProductDTO productDTO = this.productToProductDTO(this.productService.getSingleProduct(productId));
+            responseEntity = new ResponseEntity<>(productDTO, headers, HttpStatus.OK);
             return responseEntity;
         }
         catch (Exception exception){
@@ -68,33 +69,66 @@ public class ProductController{
         }
     }
 
+    //Add New Product
     @PostMapping("")
-    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> addNewProduct(@RequestBody ProductDTO productDTORequest){
+        ResponseEntity<ProductDTO> responseEntity;
         try{
-            return new ResponseEntity<>(this.productService.addNewProduct(productDTO), HttpStatus.OK);
+            ProductDTO productDTO = this.productToProductDTO(this.productService.addNewProduct(productDTORequest));
+            responseEntity = new ResponseEntity<>(productDTO, HttpStatus.OK);
+            return responseEntity;
         }
         catch(Exception exception){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    //Delete Product
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable("id") Long productId){
-        this.productService.deleteProduct(productId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long productId){
+        ResponseEntity<Void> responseEntity;
+        try{
+            this.productService.deleteProduct(productId);
+            responseEntity = new ResponseEntity<>(HttpStatus.OK);
+            return responseEntity;
+        }
+        catch(Exception exception){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PatchMapping("/{productId}")
-    public ResponseEntity<Product> patchProduct(@PathVariable("productId") Long productId, @RequestBody ProductDTO productDto) {
+    //Update Product
+    @PatchMapping("")
+    public ResponseEntity<ProductDTO> patchProduct(@RequestBody ProductDTO productDTORequest) {
+        ResponseEntity<ProductDTO> responseEntity;
+        try{
+            ProductDTO productDTO = this.productToProductDTO(this.productService.patchProduct(productDTORequest));
+            responseEntity = new ResponseEntity<>(productDTO, HttpStatus.OK);
+            return responseEntity;
+        }
+        catch(Exception exception){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-        Product product = new Product();
-        product.setId(Long.valueOf(productDto.getId()));
-        product.setCategory(new Category());
-        product.getCategory().setName(productDto.getCategory());
-        product.setTitle(productDto.getTitle());
-        product.setPrice(productDto.getPrice());
-        product.setDescription(productDto.getDescription());
-        return new ResponseEntity<>(this.productService.patchProduct(productId, product),HttpStatus.OK);
+    public List<ProductDTO> productsToProductDTOs(List<Product> products){
+        List<ProductDTO> productDTOS = new LinkedList<>();
+        for(Product product : products){
+            productDTOS.add(this.productToProductDTO(product));
+        }
+        return productDTOS;
+    }
+
+    public ProductDTO productToProductDTO(Product product){
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(String.valueOf(product.getId()));
+        productDTO.setTitle(product.getTitle());
+        productDTO.setPrice(product.getPrice());
+        productDTO.setImageURL(product.getImageURL());
+        productDTO.setDescription(productDTO.getDescription());
+        if(product.getCategory() != null)
+            productDTO.setCategory(product.getCategory().getName());
+        return productDTO;
     }
 
 }

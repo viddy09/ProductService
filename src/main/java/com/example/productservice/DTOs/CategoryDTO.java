@@ -1,6 +1,6 @@
-package com.example.productservice_proxy_assignment.DTOs;
+package com.example.productservice.DTOs;
 
-import com.example.productservice_proxy_assignment.Models.Product;
+import com.example.productservice.Models.Product;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,4 @@ public class CategoryDTO implements Serializable {
     private String name;
     private List<Product> products;
     private String description;
-
-
 }

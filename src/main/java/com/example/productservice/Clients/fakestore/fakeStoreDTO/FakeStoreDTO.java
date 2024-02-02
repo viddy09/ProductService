@@ -1,7 +1,7 @@
-package com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO;
+package com.example.productservice.Clients.fakestore.fakeStoreDTO;
 
-import com.example.productservice_proxy_assignment.Clients.fakestore.IClientProductDTO;
-import com.example.productservice_proxy_assignment.DTOs.RatingDTO;
+import com.example.productservice.Clients.fakestore.IClientProductDTO;
+import com.example.productservice.DTOs.RatingDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

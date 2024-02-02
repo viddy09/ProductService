@@ -1,17 +1,17 @@
-package com.example.productservice_proxy_assignment.Services;
+package com.example.productservice.Services;
 
-import com.example.productservice_proxy_assignment.Clients.fakestore.client.FakeStoreClient;
-import com.example.productservice_proxy_assignment.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
-import com.example.productservice_proxy_assignment.DTOs.ProductDTO;
-import com.example.productservice_proxy_assignment.Models.Category;
-import com.example.productservice_proxy_assignment.Models.Product;
+import com.example.productservice.Clients.fakestore.client.FakeStoreClient;
+import com.example.productservice.Clients.fakestore.fakeStoreDTO.FakeStoreDTO;
+import com.example.productservice.DTOs.ProductDTO;
+import com.example.productservice.Models.Category;
+import com.example.productservice.Models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,10 +30,6 @@ public class ProductService implements IProductService {
     }
     @Override
     public List<Product> getAllProducts(){
-        //RestTemplate restTemplate = this.restTemplateBuilder.build();
-        //ResponseEntity<ProductDTO[]> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products", ProductDTO[].class);
-        //ResponseEntity<ProductDTO[]> responseEntity = fakeStoreClient.
-        //List<Product> products = this.getProduct(Objects.requireNonNull(responseEntity.getBody()));
         return this.getProduct(fakeStoreClient.getAllProducts());
     }
     public List<Product> getProduct(FakeStoreDTO[] fakeStoreDTOS){
@@ -53,11 +49,6 @@ public class ProductService implements IProductService {
     }
     @Override
     public Product getSingleProduct(Long productId) {
-        /*RestTemplate restTemplate = this.restTemplateBuilder.build();
-            ResponseEntity<ProductDTO> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/{id}", ProductDTO.class, productId);
-            List<Product> products = this.getProduct(new ProductDTO[]{responseEntity.getBody()});
-            Product product = null;
-            if(!products.isEmpty()) product = products.get(0);*/
         FakeStoreDTO fd = (FakeStoreDTO)redisTemplate.opsForHash().get("PRODUCTS", productId);
         if(fd == null){
             fd = (FakeStoreDTO)fakeStoreClient.getSingleProduct(productId);
@@ -75,8 +66,8 @@ public class ProductService implements IProductService {
         //RestTemplate restTemplate = this.restTemplateBuilder.build();
         //ResponseEntity<ProductDTO> responseEntity = restTemplate.postForEntity("https://fakestoreapi.com/products", productDTO, ProductDTO.class);
         //List<Product> products = this.getProduct(new ProductDTO[]{responseEntity.getBody()});
-        List<Product> products= new LinkedList<>();
-        //products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.addNewProduct(fakeProductDTO)});
+        List<Product> products = new LinkedList<>();
+        products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.addNewProduct(productDTOToFakeStoreDTO(productDTO))});
         Product product = null;
         if(!products.isEmpty()) product = products.get(0);
         return product;
@@ -89,19 +80,24 @@ public class ProductService implements IProductService {
         fakeStoreClient.deleteProduct(productId);
     }
 
-    public Product patchProduct(Long productId, Product product){
+    public Product patchProduct(ProductDTO productDTO){
         RestTemplate restTemplate = restTemplateBuilder.build();
 
-        FakeStoreDTO fakeStoreDto = new FakeStoreDTO();
-        fakeStoreDto.setDescription(product.getDescription());
-        fakeStoreDto.setImage(product.getImageURL());
-        fakeStoreDto.setPrice(product.getPrice());
-        fakeStoreDto.setTitle(product.getTitle());
-        fakeStoreDto.setCategory(product.getCategory().getName());
-        List<Product> products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.patchProduct(productId,fakeStoreDto)});
+        FakeStoreDTO fakeStoreDto = productDTOToFakeStoreDTO(productDTO);
+        List<Product> products = this.getProduct(new FakeStoreDTO[]{fakeStoreClient.patchProduct(fakeStoreDto.getId(), fakeStoreDto)});
         Product product1 = null;
         if(!products.isEmpty()) product1 = products.get(0);
         return product1;
+    }
+
+    public FakeStoreDTO productDTOToFakeStoreDTO(ProductDTO productDTO){
+        FakeStoreDTO fakeStoreDTO = new FakeStoreDTO();
+        fakeStoreDTO.setId(Long.valueOf(productDTO.getId()));
+        fakeStoreDTO.setTitle(productDTO.getTitle());
+        fakeStoreDTO.setImage(productDTO.getImageURL());
+        fakeStoreDTO.setPrice(productDTO.getPrice());
+        fakeStoreDTO.setDescription(productDTO.getDescription());
+        return fakeStoreDTO;
     }
 
 }

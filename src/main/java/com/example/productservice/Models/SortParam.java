@@ -1,4 +1,4 @@
-package com.example.productservice_proxy_assignment.Models;
+package com.example.productservice.Models;
 
 import lombok.Getter;
 import lombok.Setter;

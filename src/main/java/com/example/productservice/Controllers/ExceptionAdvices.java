@@ -1,4 +1,4 @@
-package com.example.productservice_proxy_assignment.Controllers;
+package com.example.productservice.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

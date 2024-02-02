@@ -1,6 +1,6 @@
-package com.example.productservice_proxy_assignment.Repositories;
+package com.example.productservice.Repositories;
 
-import com.example.productservice_proxy_assignment.Models.Category;
+import com.example.productservice.Models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

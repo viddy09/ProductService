@@ -1,4 +1,4 @@
-package com.example.productservice_proxy_assignment.Security;
+package com.example.productservice.Security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

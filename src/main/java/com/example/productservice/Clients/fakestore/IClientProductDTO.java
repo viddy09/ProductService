@@ -1,4 +1,4 @@
-package com.example.productservice_proxy_assignment.Clients.fakestore;
+package com.example.productservice.Clients.fakestore;
 
 public interface IClientProductDTO {
 }

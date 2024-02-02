@@ -1,8 +1,8 @@
-package com.example.productservice_proxy_assignment.Services;
+package com.example.productservice.Services;
 
-import com.example.productservice_proxy_assignment.DTOs.CategoryDTO;
-import com.example.productservice_proxy_assignment.Models.Category;
-import com.example.productservice_proxy_assignment.Repositories.CategoryRepo;
+import com.example.productservice.DTOs.CategoryDTO;
+import com.example.productservice.Models.Category;
+import com.example.productservice.Repositories.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,25 +25,17 @@ public class SelfCategoryService implements ICategoryService{
     }
 
     @Override
-    public Category updateCategory(Long Id, CategoryDTO categoryDTO) {
-        Category category = this.getCategory(categoryDTO);
-        category.setId(Id);
-        return categoryRepo.save(category);
-    }
-
-    @Override
     public Category patchCategory(Long Id, CategoryDTO categoryDTO) {
         Category category = this.getCategory(categoryDTO);
         category.setId(Id);
         return categoryRepo.save(category);
     }
 
-    @org.jetbrains.annotations.NotNull
     private Category getCategory(CategoryDTO categoryDTO){
         Category category = new Category();
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
-        category.setProducts(categoryDTO.getProducts());
+        //category.setProducts(categoryDTO.getProducts());
         return category;
     }
 

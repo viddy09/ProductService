@@ -1,4 +1,4 @@
-package com.example.productservice_proxy_assignment.configs;
+package com.example.productservice.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

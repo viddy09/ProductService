@@ -1,4 +1,4 @@
-package com.example.productservice_proxy_assignment.Security;
+package com.example.productservice.Security;
 
 import lombok.Getter;
 import lombok.Setter;
