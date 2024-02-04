@@ -1,7 +1,9 @@
 package com.example.productservice.Services;
 
+import com.example.productservice.DTOs.CategoryDTO;
 import com.example.productservice.Models.Category;
 import com.example.productservice.Repositories.CategoryRepo;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,14 @@ public class CategoryService {
 
     @Test
     @DisplayName("CheckIgnoreCase - Category Name")
+    @Transactional
     void testGetSingleCategory(){
         Category category = new Category();
         category.setName("Electronics");
         category.setDescription("Works on electricity");
-        Category category1 = categoryRepo.save(category);
+        category = categoryRepo.save(category);
+
+        Category category1 = selfCategoryService.getCategory(category.getId());
 
         assertThat(category1, hasProperty("name", equalTo("Electronics")));
 
@@ -34,6 +39,7 @@ public class CategoryService {
     }
 
     @Test
+    @Transactional
     void testGetALLCategory(){
         Category category1 = new Category();
         category1.setName("Electronics");
@@ -45,7 +51,7 @@ public class CategoryService {
         category2.setDescription("Humans clothes");
         category2 = categoryRepo.save(category2);
 
-        List<Category> categories = categoryRepo.findAll();
+        List<Category> categories = selfCategoryService.getAllCategory();
         assertThat(categories.size(), greaterThanOrEqualTo(1));
     }
 

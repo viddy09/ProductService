@@ -19,5 +19,6 @@ public interface ProductRepo extends JpaRepository<Product,Long> {
     @Override
     List<Product> findAll();
 
+    //Pagination
     List<Product> findByTitleEquals(String title, Pageable pageable);
 }

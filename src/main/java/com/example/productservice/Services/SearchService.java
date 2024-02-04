@@ -23,6 +23,8 @@ public class SearchService {
         else{
             sort = Sort.by(sortParamList.get(0).getParaName()).descending();
         }
+
+        // To add multiple sorting Parameters
         for (int  i=1; i<sortParamList.size(); i++) {
             if (sortParamList.get(i).getSortType().equals("ASC")) {
                 sort = sort.and(Sort.by(sortParamList.get(i).getParaName()));

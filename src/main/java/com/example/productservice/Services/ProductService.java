@@ -52,6 +52,9 @@ public class ProductService implements IProductService {
         FakeStoreDTO fd = (FakeStoreDTO)redisTemplate.opsForHash().get("PRODUCTS", productId);
         if(fd == null){
             fd = (FakeStoreDTO)fakeStoreClient.getSingleProduct(productId);
+            if(fd == null){
+                return null;
+            }
             redisTemplate.opsForHash().put("PRODUCTS", productId, fd);
         }
         List<Product> products = this.getProduct(new FakeStoreDTO[]{fd});

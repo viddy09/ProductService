@@ -2,6 +2,8 @@ package com.example.productservice.Controllers;
 
 import com.example.productservice.DTOs.ProductDTO;
 import com.example.productservice.Models.Product;
+import com.example.productservice.Security.JWTObject;
+import com.example.productservice.Security.TokenValidator;
 import com.example.productservice.Services.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -12,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.parameters.P;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.MultiValueMapAdapter;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -23,9 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,6 +51,12 @@ class ProductControllerTest {
     @Captor
     private ArgumentCaptor<Long> idCaptor;
 
+    /*@Captor
+    private ArgumentCaptor<String> tokenCaptor;*/
+
+    @MockBean
+    private TokenValidator tokenValidator;
+
     @Test
     void getAllProducts() throws Exception {
         ArrayList<Product> products = new ArrayList<>();
@@ -65,8 +73,10 @@ class ProductControllerTest {
 
         when(productService.getAllProducts()).thenReturn(products);
         //when(productController.productsToProductDTOs(ArrayList.class)).thenReturn(new LinkedList<ProductDTO>());
+        when(tokenValidator.validateToken("token")).thenReturn(new JWTObject());
 
-        mockMvc.perform(get("/products"))
+        mockMvc.perform(get("/products")
+                        .header(HttpHeaders.AUTHORIZATION, "token"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(productDTOs)));
     }
@@ -89,9 +99,12 @@ class ProductControllerTest {
         productDTO.setId("69");
         productDTO.setPrice(9000);
 
-        when(productService.getSingleProduct(69L)).thenReturn(product);
 
-        mockMvc.perform(get("/products/69"))
+        when(productService.getSingleProduct(69L)).thenReturn(product);
+        when(tokenValidator.validateToken("token")).thenReturn(new JWTObject());
+
+        mockMvc.perform(get("/products/69")
+                        .header(HttpHeaders.AUTHORIZATION, "token"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(productDTO)));
     }
@@ -109,10 +122,12 @@ class ProductControllerTest {
         expectedProductDTO.setId("69");
 
         when(productService.addNewProduct(any(ProductDTO.class))).thenReturn(product);
+        when(tokenValidator.validateToken("token")).thenReturn(new JWTObject());
 
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(expectedProductDTO)))
+                        .content(objectMapper.writeValueAsString(expectedProductDTO))
+                        .header(HttpHeaders.AUTHORIZATION, "token"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(expectedProductDTO)));
     }
@@ -134,20 +149,24 @@ class ProductControllerTest {
         expectedProduct.setTitle("Test");
 
         when(productService.patchProduct(any(ProductDTO.class))).thenReturn(expectedProduct);
+        when(tokenValidator.validateToken("token")).thenReturn(new JWTObject());
 
         mockMvc.perform(patch("/products")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(expectedProductDTO)))
+                        .content(objectMapper.writeValueAsString(expectedProductDTO))
+                        .header(HttpHeaders.AUTHORIZATION, "token"))
                 .andExpect(content().string(objectMapper.writeValueAsString(expectedProductDTO)));
 
     }
 
     @Test
     @DisplayName("Checking Argument Authenticity")
-    void test_checkCorrectArgumentPassedToGetSingleMethod(){
+    void test_checkCorrectArgumentPassedToGetSingleMethod() throws Exception{
         Long id=90L;
         when(productService.getSingleProduct(id)).thenCallRealMethod();
-        productController.getSingleProduct(id);
+        when(tokenValidator.validateToken("token")).thenReturn(new JWTObject());
+        mockMvc.perform(get("/products/90")
+                .header(HttpHeaders.AUTHORIZATION, "token"));
         verify(productService).getSingleProduct(idCaptor.capture());
         verify(productService,times(1)).getSingleProduct(any());
         assertEquals (id,idCaptor.getValue());

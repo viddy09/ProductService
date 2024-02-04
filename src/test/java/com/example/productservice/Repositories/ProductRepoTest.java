@@ -2,6 +2,7 @@ package com.example.productservice.Repositories;
 
 import com.example.productservice.Models.Category;
 import com.example.productservice.Models.Product;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ public class ProductRepoTest {
     CategoryRepo categoryRepo;
 
     @Test
+    @Transactional
     void testProductSave(){
         Category category = new Category();
         category.setName("Test Category");
@@ -33,6 +35,7 @@ public class ProductRepoTest {
     }
 
     @Test
+    @Transactional
     void testProductGetById(){
         Category category = new Category();
         category.setName("Test Category");
