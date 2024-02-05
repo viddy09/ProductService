@@ -10,8 +10,8 @@
  		-> Token is validated (Authroization checked, Role checked)
 			Successfully
 				Users request processed.
-               		Else 
-                 		Request Denied.
+			Else 
+				Request Denied.
 
 # Pre Requisites:
   	JDK 12+, Spring and spring boot Framework, Maven dependency, Redis for Windows is required.
