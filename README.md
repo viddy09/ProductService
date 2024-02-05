@@ -1,4 +1,4 @@
-# Product Management : 
+# ProductService : 
 	It is one of the service of E-commerce project deals with managing products.
 	End user can view single product, search for produts, can see products by category can apply filters like sorting by various factors like title, price, etc.
 	Admin user can manage products.
