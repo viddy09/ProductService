@@ -14,25 +14,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
-        /*http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-              //.formLogin(Customizer.withDefaults())
-                .csrf().disable();*/
+
+        //Provide Access to all request
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
+
+        //Provide Access to all end point expect /products GET Request
         /*http
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/products")
-                                .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                        authorize.requestMatchers("/products").hasAuthority("admin")
+                                .anyRequest().permitAll())
+                .formLogin(Customizer.withDefaults());
                 .cors().disable()
                 .csrf().disable();*/
-        /*http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/*").permitAll()
 
-                )
-                //.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-                .cors().disable()
-                .csrf().disable();*/
-        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
         return http.build();
 
     }

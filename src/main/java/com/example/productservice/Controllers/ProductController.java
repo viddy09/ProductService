@@ -2,8 +2,8 @@ package com.example.productservice.Controllers;
 
 import com.example.productservice.DTOs.ProductDTO;
 import com.example.productservice.Models.Product;
-import com.example.productservice.Security.JWTObject;
-import com.example.productservice.Security.TokenValidator;
+import com.example.productservice.Security.CustomJWTBased.JWTObject;
+import com.example.productservice.Security.CustomJWTBased.TokenValidator;
 import com.example.productservice.Services.IProductService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,10 +32,11 @@ public class ProductController{
 
     //Get All Available Product
     @GetMapping("")
-    public ResponseEntity<List<ProductDTO>> getAllProducts(@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public ResponseEntity<List<ProductDTO>> getAllProducts(/*@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String token*/){
         ResponseEntity<List<ProductDTO>> responseEntity;
         try{
-            JWTObject authtoken = null;
+            //Commented because using Spring OAuth
+            /*JWTObject authtoken = null;
             if(token !=  null) {
                 authtoken = tokenValidator.validateToken(token);
             }
@@ -46,9 +47,9 @@ public class ProductController{
             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
             headers.add("Accept", "application/json");
             headers.add("Content-Type", "application/json");
-            headers.add("auth-token", "heyaccess");
+            headers.add("auth-token", "heyaccess");*/
             List<ProductDTO> productDTOS = this.productsToProductDTOs(this.productService.getAllProducts());
-            responseEntity = new ResponseEntity<>(productDTOS, headers, HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(productDTOS, /*headers,*/ HttpStatus.OK);
             return responseEntity;
         }
         catch(Exception exception) {
@@ -93,18 +94,18 @@ public class ProductController{
 
     //Add New Product
     @PostMapping("")
-    public ResponseEntity<ProductDTO> addNewProduct(@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ResponseEntity<ProductDTO> addNewProduct(/*@Nullable @RequestHeader(HttpHeaders.AUTHORIZATION) String token,*/
                                                     @RequestBody ProductDTO productDTORequest){
         ResponseEntity<ProductDTO> responseEntity;
         try{
-            JWTObject authtoken = null;
+            /*JWTObject authtoken = null;
             if(token !=  null) {
                 authtoken = tokenValidator.validateToken(token);
             }
             if(authtoken == null){
 //                System.out.println("Got token null");
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
+            }*/
             ProductDTO productDTO = this.productToProductDTO(this.productService.addNewProduct(productDTORequest));
             responseEntity = new ResponseEntity<>(productDTO, HttpStatus.OK);
             return responseEntity;
@@ -170,6 +171,9 @@ public class ProductController{
     }
 
     public ProductDTO productToProductDTO(Product product){
+        if(product == null){
+            return null;
+        }
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(String.valueOf(product.getId()));
         productDTO.setTitle(product.getTitle());

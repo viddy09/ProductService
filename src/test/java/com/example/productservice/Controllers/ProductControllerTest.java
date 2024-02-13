@@ -2,8 +2,8 @@ package com.example.productservice.Controllers;
 
 import com.example.productservice.DTOs.ProductDTO;
 import com.example.productservice.Models.Product;
-import com.example.productservice.Security.JWTObject;
-import com.example.productservice.Security.TokenValidator;
+import com.example.productservice.Security.CustomJWTBased.JWTObject;
+import com.example.productservice.Security.CustomJWTBased.TokenValidator;
 import com.example.productservice.Services.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.MultiValueMapAdapter;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

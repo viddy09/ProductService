@@ -2,9 +2,10 @@ package com.example.productservice.Controllers;
 
 import com.example.productservice.DTOs.ProductDTO;
 import com.example.productservice.DTOs.SearchRequestDTO;
+import com.example.productservice.Models.ElasticProduct;
 import com.example.productservice.Models.Product;
-import com.example.productservice.Security.JWTObject;
-import com.example.productservice.Security.TokenValidator;
+import com.example.productservice.Security.CustomJWTBased.JWTObject;
+import com.example.productservice.Security.CustomJWTBased.TokenValidator;
 import com.example.productservice.Services.SearchService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -59,5 +60,17 @@ public class SearchController {
         productDTO.setDescription(product.getDescription());
         productDTO.setImageURL(product.getImageURL());
         return productDTO;
+    }
+
+    @GetMapping("/{title}")
+    public ResponseEntity<List<ElasticProduct>> getAllProducts(@PathVariable("title") String title) throws Exception{
+        ResponseEntity<List<ElasticProduct>> responseEntity;
+        try{
+            List<ElasticProduct> products = searchService.getAllProductsByTitle(title);
+            responseEntity = new ResponseEntity<>(products, HttpStatus.OK);
+        }catch (Exception e){
+            responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 }

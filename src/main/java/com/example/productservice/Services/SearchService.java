@@ -1,7 +1,9 @@
 package com.example.productservice.Services;
 
+import com.example.productservice.Models.ElasticProduct;
 import com.example.productservice.Models.Product;
 import com.example.productservice.Models.SortParam;
+import com.example.productservice.Repositories.ElasticSearchRepo;
 import com.example.productservice.Repositories.ProductRepo;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,8 +13,10 @@ import java.util.List;
 @Service
 public class SearchService {
     private final ProductRepo productRepo;
-    public SearchService(ProductRepo productRepo){
+    private final ElasticSearchRepo elasticSearchRepo;
+    public SearchService(ProductRepo productRepo, ElasticSearchRepo elasticSearchRepo){
         this.productRepo = productRepo;
+        this.elasticSearchRepo = elasticSearchRepo;
     }
 
     public List<Product> search(String title, int pageSize, int pageNumber, List<SortParam> sortParamList){
@@ -33,5 +37,9 @@ public class SearchService {
             }
         }
         return productRepo.findByTitleEquals(title, PageRequest.of(pageNumber, pageSize, sort));
+    }
+
+    public List<ElasticProduct> getAllProductsByTitle(String title){
+        return elasticSearchRepo.findAllByTitleContaining(title);
     }
 }

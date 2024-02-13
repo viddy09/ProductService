@@ -2,8 +2,8 @@ package com.example.productservice.Controllers;
 
 import com.example.productservice.DTOs.CategoryDTO;
 import com.example.productservice.Models.Category;
-import com.example.productservice.Security.JWTObject;
-import com.example.productservice.Security.TokenValidator;
+import com.example.productservice.Security.CustomJWTBased.JWTObject;
+import com.example.productservice.Security.CustomJWTBased.TokenValidator;
 import com.example.productservice.Services.SelfCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

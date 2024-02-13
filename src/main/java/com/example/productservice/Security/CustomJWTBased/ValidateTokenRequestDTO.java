@@ -1,4 +1,4 @@
-package com.example.productservice.Security;
+package com.example.productservice.Security.CustomJWTBased;
 
 import lombok.Getter;
 import lombok.Setter;
