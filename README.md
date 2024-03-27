@@ -12,6 +12,8 @@
 				Users request processed.
 			Else 
 				Request Denied.
+![E-Commerce](https://github.com/viddy09/ProductService/assets/70717147/2622fe4a-f749-4481-97a3-ca5870dc764c)
+
 
 # Pre Requisites:
   	JDK 12+, Spring and spring boot Framework, Maven dependency, Redis for Windows is required.
